@@ -82,6 +82,7 @@ export default {
     left: 200px;
     top: 200px;
     opacity: 1;
+    cursor: pointer;
 }
 
 </style>

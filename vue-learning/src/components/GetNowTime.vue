@@ -1,0 +1,55 @@
+<template>
+    <input type="button" value="获取当前时间" v-on:click="gettime">
+</template>
+
+<script>
+export default {
+  name: "getnowtime",
+  components: {},
+  data() {
+    return {};
+  },
+  methods: {
+    gettime: function() {
+      //创建Data对象,并获取年月日时分秒
+      var start = new Date();
+      var year = start.getFullYear();
+      var month = start.getMonth() + 1;
+      var day = start.getDate();
+      var hour = start.getHours();
+      var minute = start.getMinutes();
+      var second = start.getSeconds();
+      //时分秒是一位时在前面补0
+      if (hour >= 0 && hour <= 9) {
+        hour = "0" + hour;
+      }
+      if (minute >= 0 && minute <= 9) {
+        minute = "0" + minute;
+      }
+      if (second >= 0 && second <= 9) {
+        second = "0" + second;
+      }
+      //拼接起来,获取格式化之后的字符串
+      var after =
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        " " +
+        hour +
+        ":" +
+        minute +
+        ":" +
+        second;
+      alert("格式化之前:" + start + "\n" + "格式化之后:" + after);
+    }
+  },
+  mounted() {}
+};
+</script>
+
+<style>
+</style>
+
+

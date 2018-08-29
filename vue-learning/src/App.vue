@@ -3,7 +3,7 @@
     <!-- <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <dragmove v-show="seendragmove"></dragmove>
-    <getnowtime></getnowtime>
+    <getnowtime v-show= "seengetnowtime"></getnowtime>
   </div>
 </template>
 
@@ -21,7 +21,8 @@ export default {
   },
   data() {
     return {
-      seendragmove: false
+      seendragmove: true,
+      seengetnowtime: false
     };
   }
 };

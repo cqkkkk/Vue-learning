@@ -2,6 +2,7 @@
     <div>
         <canvas id="tree" width="100" height="150" v-on:mousedown="movetree"></canvas>
         <canvas id="phone" width="100" height="180" v-on:mousedown="movephone"></canvas>
+        <canvas id="taiji" width="100" height="100" v-on:mousedown="movetaiji"></canvas>
 
         <div id="addtree"><div id="mountedtree"></div></div>
     </div>
@@ -15,7 +16,9 @@ export default {
   data() {
     return {
       treeleft: 200,
-      treetop: 200
+      treetop: 200,
+      taijileft: 500,
+      taijitop: 200
     };
   },
   methods: {
@@ -130,17 +133,104 @@ export default {
         phone.style.left = left + "px";
         phone.style.top = top + "px";
       };
-      document.onmouseup = e => {
+      document.onmouseup = () => {
         phone.style.opacity = "1";
         document.onmousedown = null;
         document.onmousemove = null;
         document.onmouseup = null;
+      };
+    },
+    //drawtaiji
+    drawtaiji: function() {
+      var canvas = document.getElementById("taiji");
+      if (!canvas.getContext) return;
+      var ctx = canvas.getContext("2d");
+      ctx.fillStyle = "black";
+      ctx.beginPath();
+      ctx.arc(50, 50, 50, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = "white";
+      ctx.beginPath();
+      ctx.moveTo(50, 0);
+      ctx.arc(50, 50, 50, Math.PI / 2, Math.PI * 3 / 2, false);
+      ctx.arc(50, 25, 25, Math.PI / 2, Math.PI * 3 / 2, true);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = "black";
+      ctx.beginPath();
+      ctx.arc(50, 75, 25, Math.PI / 2, Math.PI * 3 / 2, false);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(50, 25, 7, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = "white";
+      ctx.beginPath();
+      ctx.arc(50, 75, 7, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.strokeStyle = "gray";
+      ctx.beginPath();
+      ctx.arc(50, 50, 50, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.stroke();
+    },
+    /*movetaiji
+    *闭包方法做,闭包可以实时保存鼠标和图片的位置信息,
+    *这样每一次比较实际上是与上一个触发点作比较*/
+    movetaiji: function(e) {
+      e.preventDefault();
+      //鼠标初始位置
+      var [disx, disy] = [e.clientX, e.clientY];
+      //图片初始位置
+      var taiji = document.getElementById("taiji");
+      var [disX, disY] = [
+        parseInt(taiji.getBoundingClientRect().left),
+        parseInt(taiji.getBoundingClientRect().top)
+      ];
+      taiji.style.opacity = "0.5";
+      //move时调用一个闭包
+      document.onmousemove = this.listenerMove(disx, disy, disX, disY);
+      document.onmouseup = () => {
+        taiji.style.opacity = "1";
+        document.onmousedown = null;
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    },
+    listenerMove: function(mousedisx, mousedisy, taijidisx, taijidisy) {
+      //这四个值不会被垃圾回收
+      let x = mousedisx;
+      let y = mousedisy;
+      let xx = taijidisx;
+      let yy = taijidisy;
+      return e => {
+        //计算差值
+        var subx = e.clientX - x;
+        var suby = e.clientY - y;
+        //计算图片实时位置值
+        var addx = xx + subx;
+        var addy = yy + suby;
+        var taiji = document.getElementById("taiji");
+        taiji.style.left = addx + "px";
+        taiji.style.top = addy + "px";
+        //更新这四个值,也就是move过程中实时的鼠标位置和图片位置
+        [x, y] = [e.clientX, e.clientY];
+        [xx, yy] = [addx, addy];
       };
     }
   },
   mounted() {
     this.draw();
     this.drawphone();
+    this.drawtaiji();
   }
 };
 </script>
@@ -157,6 +247,13 @@ export default {
   position: absolute;
   left: 500px;
   top: 500px;
+  opacity: 1;
+  cursor: pointer;
+}
+#taiji {
+  position: absolute;
+  left: 500px;
+  top: 200px;
   opacity: 1;
   cursor: pointer;
 }

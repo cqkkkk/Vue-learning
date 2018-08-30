@@ -3,6 +3,7 @@
         <canvas id="clock" width="500" height="500"></canvas>
         <canvas id="hourhand" width="30" height="180" v-on:mousedown="movehour"></canvas>
         <canvas id="minutehand" width="20" height="200" v-on:mousedown="moveminute"></canvas>
+        <canvas id="secondhand" width="10" height="205" v-on:mousedown="movesecond"></canvas>
         <canvas id="clockpoint" width="50" height="50"></canvas>
     </div>
     
@@ -14,15 +15,87 @@ export default {
     components:{},
     data(){
         return{
-
+            moveangle:0,
         };
     },
     methods:{
-        movehour:function(){
+        movehour:function(e){
+            e.preventDefault();
+            e.stopPropagation();
 
+            let odiv = e.target;
+            const point = document.getElementById("clockpoint");
+            const pointleft = parseInt(point.getBoundingClientRect().left);
+            const pointtop = parseInt(point.getBoundingClientRect().top);
+
+            document.onmousemove = e =>{
+                let disx = e.clientX - pointleft - 25 ;
+                let disy = 25 + pointtop -e.clientY;
+                this.calculateangle(disx,disy);
+                odiv.style.transform = "rotate(" + this.moveangle + "deg)";
+            }
+
+            document.onmouseup = () =>{
+                document.onmousedown = null;
+                document.onmousemove = null;
+                document.onmouseup = null;
+            }
         },
         moveminute:function(e){ 
+            e.preventDefault();
+            e.stopPropagation();
 
+            let odiv = e.target;
+            const point = document.getElementById("clockpoint");
+            const pointleft = parseInt(point.getBoundingClientRect().left);
+            const pointtop = parseInt(point.getBoundingClientRect().top);
+
+            document.onmousemove = e =>{
+                let disx = e.clientX - pointleft - 25 ;
+                let disy = 25 + pointtop -e.clientY;
+                this.calculateangle(disx,disy);
+                odiv.style.transform = "rotate(" + this.moveangle + "deg)";
+            }
+
+            document.onmouseup = () =>{
+                document.onmousedown = null;
+                document.onmousemove = null;
+                document.onmouseup = null;
+            }
+        },
+        movesecond:function(e){
+            e.preventDefault();
+            e.stopPropagation();
+
+            let odiv = e.target;
+            const point = document.getElementById("clockpoint");
+            const pointleft = parseInt(point.getBoundingClientRect().left);
+            const pointtop = parseInt(point.getBoundingClientRect().top);
+
+            document.onmousemove = e =>{
+                let disx = e.clientX - pointleft - 25 ;
+                let disy = 25 + pointtop -e.clientY;
+                this.calculateangle(disx,disy);
+                odiv.style.transform = "rotate(" + this.moveangle + "deg)";
+            }
+
+            document.onmouseup = () =>{
+                document.onmousedown = null;
+                document.onmousemove = null;
+                document.onmouseup = null;
+            }
+        },
+        // 计算鼠标实时角度
+        calculateangle: function(x, y) {
+        if (x >= 0 && y >= 0) {
+            this.moveangle = 90 - Math.atan(y / x) / Math.PI * 180;
+        } else if (x < 0 && y > 0) {
+            this.moveangle = 270 + Math.atan(-y / x) / Math.PI * 180;
+        } else if (x < 0 && y < 0) {
+            this.moveangle = 270 - Math.atan(y / x) / Math.PI * 180;
+        } else {
+            this.moveangle = 90 + Math.atan(-y / x) / Math.PI * 180;
+        }
         },
         drawclock:function(){
             var canvas = document.getElementById("clock");
@@ -80,12 +153,23 @@ export default {
             ctx.closePath();
             ctx.fill();
         },
+        drawsecondhand:function(){
+            var canvas = document.getElementById("secondhand");
+            if(!canvas.getContext) return;
+            var ctx = canvas.getContext("2d");
+            ctx.fillStyle = "red";
+            ctx.beginPath();
+            ctx.fillRect(0,0,6,205);
+            ctx.closePath();
+        }
+
     },
     mounted(){
         this.drawclock();
         this.drawhourhand();
         this.drawminutehand();
         this.drawclockpoint();
+        this.drawsecondhand();
     
     }
 }
@@ -108,6 +192,7 @@ export default {
     top:170px;
     transform: rotate(0deg);
     transform-origin: center bottom;
+    cursor: pointer;
 }
 #minutehand{
     position: absolute;
@@ -115,5 +200,14 @@ export default {
     top: 150px;
     transform: rotate(0deg);
     transform-origin: center bottom;
+    cursor: pointer;
+}
+#secondhand{
+    position: absolute;
+    left:348px;
+    top: 150px;
+    transform: rotate(0deg);
+    transform-origin: center bottom;
+    cursor: pointer;
 }
 </style>

@@ -108,19 +108,32 @@ export default {
             const pointleft = parseInt(point.getBoundingClientRect().left);
             const pointtop = parseInt(point.getBoundingClientRect().top);
 
-            document.onmousemove = e =>{
+            if(this.linkmovevalue){
+                var disX = e.clientX - pointleft - 25 ;
+                var disY = 25 + pointtop -e.clientY;
+                // mousemove的时候调用一个闭包，前两个参数分别表示之前的初始坐标
+                document.onmousemove = this.listenerMove(disX,disY,false);
+
+                document.onmouseup = () =>{
+                    document.onmousedown = null;
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                }
+            }else{
+                document.onmousemove = e =>{
                 let disx = e.clientX - pointleft - 25 ;
                 let disy = 25 + pointtop -e.clientY;
                 this.calculateangle(disx,disy);
                 odiv.style.transform = "rotate(" + this.moveangle + "deg)";
+                }
+                document.onmouseup = () =>{
+                    this.movesecondvalue = this.moveangle;
+                    document.onmousedown = null;
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                }
             }
-
-            document.onmouseup = () =>{
-                this.movesecondvalue = this.moveangle;
-                document.onmousedown = null;
-                document.onmousemove = null;
-                document.onmouseup = null;
-            }
+            
         },
         // 计算鼠标实时角度
         calculateangle: function(x, y) {

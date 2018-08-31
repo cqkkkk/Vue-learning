@@ -4,8 +4,8 @@
     <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <dragmove v-show="seendragmove"></dragmove>
     <getnowtime v-show= "seengetnowtime"></getnowtime>
-    <!-- <clock></clock> -->
-    <draganddrop></draganddrop>
+    <clock></clock>
+    <!-- <draganddrop></draganddrop> -->
   </div>
 </template>
 

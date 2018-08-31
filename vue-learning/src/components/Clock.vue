@@ -1,9 +1,11 @@
 <template>
     <div>
+        <input id= "linkmove" type="button" v-bind:value="btvalue" v-on:click="changelinkmove"><br><br>
+        <input id="btsecond" type="button" v-bind:value="btsecondvalue" v-on:click="changesecondhand">
         <canvas id="clock" width="500" height="500"></canvas>
         <canvas id="hourhand" width="30" height="180" v-on:mousedown="movehour"></canvas>
         <canvas id="minutehand" width="20" height="200" v-on:mousedown="moveminute"></canvas>
-        <canvas id="secondhand" width="10" height="205" v-on:mousedown="movesecond"></canvas>
+        <canvas id="secondhand" width="6" height="205" v-on:mousedown="movesecond" v-show="seensecondhand"></canvas>
         <canvas id="clockpoint" width="50" height="50"></canvas>
     </div>
     
@@ -16,6 +18,13 @@ export default {
     data(){
         return{
             moveangle:0,
+            movehourvalue:0,
+            moveminutevalue:0,
+            movesecondvalue:0,
+            btvalue:"指针不联动",
+            linkmovevalue:false,
+            btsecondvalue:"秒针显示",
+            seensecondhand:true,
         };
     },
     methods:{
@@ -36,6 +45,7 @@ export default {
             }
 
             document.onmouseup = () =>{
+                this.movehourvalue = this.moveangle;
                 document.onmousedown = null;
                 document.onmousemove = null;
                 document.onmouseup = null;
@@ -50,18 +60,44 @@ export default {
             const pointleft = parseInt(point.getBoundingClientRect().left);
             const pointtop = parseInt(point.getBoundingClientRect().top);
 
-            document.onmousemove = e =>{
-                let disx = e.clientX - pointleft - 25 ;
-                let disy = 25 + pointtop -e.clientY;
-                this.calculateangle(disx,disy);
-                odiv.style.transform = "rotate(" + this.moveangle + "deg)";
+            if(this.linkmovevalue){
+                // 校正
+                const correct1 = this.moveminutevalue / 360 * 30;
+                const correct2 = this.movehourvalue % 30;
+                if (correct1 == correct2) {
+                this.movehourvalue = this.movehourvalue;
+                } else {
+                this.movehourvalue = parseInt(this.movehourvalue / 30) * 30 + correct1;
+                const hour = document.getElementById("hourhand");
+                hour.style.transform = "rotate(" + this.movehourvalue + "deg)";
+                }
+
+                var disX = e.clientX - pointleft - 25 ;
+                var disY = 25 + pointtop -e.clientY;
+                // mousemove的时候调用一个闭包，前两个参数分别表示之前的初始坐标
+                document.onmousemove = this.listenerMove(disX,disY,true);
+
+                document.onmouseup = () =>{
+                    document.onmousedown = null;
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                }
+            }else{
+                document.onmousemove = e =>{
+                    let disx = e.clientX - pointleft - 25 ;
+                    let disy = 25 + pointtop -e.clientY;
+                    this.calculateangle(disx,disy);
+                    odiv.style.transform = "rotate(" + this.moveangle + "deg)";
+                }
+                document.onmouseup = () =>{
+                    this.moveminutevalue = this.moveangle;
+                    document.onmousedown = null;
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                }
             }
 
-            document.onmouseup = () =>{
-                document.onmousedown = null;
-                document.onmousemove = null;
-                document.onmouseup = null;
-            }
+            
         },
         movesecond:function(e){
             e.preventDefault();
@@ -80,6 +116,7 @@ export default {
             }
 
             document.onmouseup = () =>{
+                this.movesecondvalue = this.moveangle;
                 document.onmousedown = null;
                 document.onmousemove = null;
                 document.onmouseup = null;
@@ -87,15 +124,133 @@ export default {
         },
         // 计算鼠标实时角度
         calculateangle: function(x, y) {
-        if (x >= 0 && y >= 0) {
-            this.moveangle = 90 - Math.atan(y / x) / Math.PI * 180;
-        } else if (x < 0 && y > 0) {
-            this.moveangle = 270 + Math.atan(-y / x) / Math.PI * 180;
-        } else if (x < 0 && y < 0) {
-            this.moveangle = 270 - Math.atan(y / x) / Math.PI * 180;
+            if (x >= 0 && y >= 0) {
+                this.moveangle = 90 - Math.atan(y / x) / Math.PI * 180;
+            } else if (x < 0 && y > 0) {
+                this.moveangle = 270 + Math.atan(-y / x) / Math.PI * 180;
+            } else if (x < 0 && y < 0) {
+                this.moveangle = 270 - Math.atan(y / x) / Math.PI * 180;
+            } else {
+                this.moveangle = 90 + Math.atan(-y / x) / Math.PI * 180;
+            }
+        },
+        // 利用闭包实时监听鼠标位置的变化，根据变化值加了之后来判断是否经过0点处
+        listenerMove:function(x, y, minOrsec){
+            let originX = x;
+            let originY = y;
+
+            return e =>{
+                const point = document.getElementById("clockpoint");
+                const pointleft = parseInt(point.getBoundingClientRect().left);
+                const pointtop = parseInt(point.getBoundingClientRect().top);
+                var disx = e.clientX - pointleft - 25 ;
+                var disy = 25 + pointtop -e.clientY;
+
+                this.calculateangle(disx,disy);
+
+                // 计算移动产生的角度，先用余弦公式求出cos值，再反余弦求出角度
+                const cos =
+                (disx * originX + disy * originY) /
+                (Math.sqrt(disx * disx + disy * disy) *
+                    Math.sqrt(originX * originX + originY * originY));
+                var xita = Math.acos(cos) / Math.PI * 180;
+
+                // 判断指针是顺时针移动还是逆时针移动
+                if ((originY > 0 && disy > 0) || (originY < 0 && disy < 0)) {
+                if (Math.atan2(originY, originX) > Math.atan2(disy, disx)) {
+                    // console.log("顺时针");
+                    this.linkmove(minOrsec, xita);
+                } else {
+                    // console.log("逆时针");
+                    this.linkmoveneg(minOrsec, xita);
+                }
+                } else if (
+                (originX > 0 && originY > 0 && disy < 0) ||
+                (originX < 0 && originY < 0 && disy > 0)
+                ) {
+                // console.log("顺时针");
+                this.linkmove(minOrsec, xita);
+                } else if (
+                (originX > 0 && originY < 0 && disy > 0) ||
+                (originX < 0 && originY > 0 && disy < 0)
+                ) {
+                // console.log("逆时针");
+                this.linkmoveneg(minOrsec, xita);
+                }
+
+                // 设置css的transform值，使得指针角度跟随变化
+                if (!minOrsec) {
+                    const second = document.getElementById("secondhand");
+                    second.style.transform = "rotate(" + this.movesecondvalue + "deg)";
+                }
+                const minute = document.getElementById("minutehand");
+                minute.style.transform = "rotate(" + this.moveminutevalue + "deg)";
+                const hour = document.getElementById("hourhand");
+                hour.style.transform = "rotate(" + this.movehourvalue + "deg)";
+
+                // 改变赋值，可以使得一直move的情况下实时更改初始值
+                [originX, originY] = [disx, disy];
+            }
+        },
+        // 顺时针移动
+        linkmove: function(minorsec, Xita) {
+        if (minorsec) {
+            this.moveminutevalue = this.moveangle;
+            this.movehourvalue = this.movehourvalue + Xita / 12;
         } else {
-            this.moveangle = 90 + Math.atan(-y / x) / Math.PI * 180;
+            this.movesecondvalue = this.movesecondvalue + Xita;
         }
+        if (this.movesecondvalue > 360) {
+            this.movesecondvalue = this.moveangle;
+            this.moveminutevalue = this.moveminutevalue + 6;
+            this.movehourvalue = this.movehourvalue + 0.5;
+        } else {
+            this.movesecondvalue = this.moveangle;
+        }
+        if (this.moveminutevalue > 360) {
+            this.moveminutevalue = this.moveminutevalue - 360;
+        }
+        if (this.movehourvalue > 360) {
+            this.movehourvalue = this.movehourvalue - 360;
+        }
+        },
+        // 逆时针移动
+        linkmoveneg: function(minorsec, Xita) {
+        if (minorsec) {
+            this.moveminutevalue = this.moveangle;
+            this.movehourvalue = this.movehourvalue - Xita / 12;
+        } else {
+            this.movesecondvalue = this.movesecondvalue - Xita;
+        }
+        if (this.movesecondvalue < 0) {
+            this.movesecondvalue = this.moveangle;
+            this.moveminutevalue = this.moveminutevalue - 6;
+            this.movehourvalue = this.movehourvalue - 0.5;
+        } else {
+            this.movesecondvalue = this.moveangle;
+        }
+        if (this.moveminutevalue < 0) {
+            this.moveminutevalue = this.moveminutevalue + 360;
+        }
+        if (this.movehourvalue < 0) {
+            this.movehourvalue = this.movehourvalue + 360;
+        }
+        },
+        changelinkmove:function(){
+            this.linkmovevalue = !this.linkmovevalue;
+            if(this.linkmovevalue){
+                this.btvalue = "指针联动";
+            }else{
+                this.btvalue = "指针不联动";
+            }
+        },
+        changesecondhand:function(){
+            this.seensecondhand = !this.seensecondhand;
+            if(this.seensecondhand){
+                this.btsecondvalue = "秒针显示";
+            }else {
+                this.btsecondvalue = "秒针不显示";
+            }
         },
         drawclock:function(){
             var canvas = document.getElementById("clock");
@@ -209,5 +364,15 @@ export default {
     transform: rotate(0deg);
     transform-origin: center bottom;
     cursor: pointer;
+}
+#linkmove{
+    width: 10%;
+    height: 10%;
+    font-size: 20px;
+}
+#btsecond{
+    width: 10%;
+    height: 10%;
+    font-size: 20px;
 }
 </style>

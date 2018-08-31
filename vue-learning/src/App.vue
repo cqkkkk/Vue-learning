@@ -4,7 +4,8 @@
     <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <dragmove v-show="seendragmove"></dragmove>
     <getnowtime v-show= "seengetnowtime"></getnowtime>
-    <clock></clock>
+    <!-- <clock></clock> -->
+    <draganddrop></draganddrop>
   </div>
 </template>
 
@@ -13,6 +14,7 @@ import HelloWorld from "./components/HelloWorld.vue";
 import dragmove from "./components/DragMove.vue";
 import getnowtime from "./components/GetNowTime.vue";
 import clock from "./components/Clock.vue";
+import draganddrop from "./components/DragAndDrop.vue";
 
 export default {
   name: "app",
@@ -20,7 +22,8 @@ export default {
     HelloWorld,
     dragmove,
     getnowtime,
-    clock
+    clock,
+    draganddrop
   },
   data() {
     return {

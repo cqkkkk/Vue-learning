@@ -12,7 +12,6 @@ export default {
     components:{},
     data(){
         return{
-
         };
     },
     methods:{
@@ -42,7 +41,6 @@ export default {
         }
     },
     mounted(){
-
     }
 };
 </script>

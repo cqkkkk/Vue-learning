@@ -3,8 +3,8 @@
         <canvas id="tree" width="100" height="150" v-on:mousedown="movetree"></canvas>
         <canvas id="phone" width="100" height="180" v-on:mousedown="movephone"></canvas>
         <canvas id="taiji" width="100" height="100" v-on:mousedown="movetaiji"></canvas>
-
-        <div id="addeverything"></div>
+        <div id="addborder"></div>
+        <div id="addeverything"></div>   
         <input type="button" value="一键清空" id="clearbt" v-on:click="clearall">
     </div>
     
@@ -19,9 +19,10 @@ export default {
     return {
       treeleft: 200,
       treetop: 200,
-      taijileft: 500,
-      taijitop: 200,
+      taijileft: 100,
+      taijitop: 533,
       treevalue:0,
+      phonevalue:0,
     };
   },
   methods: {
@@ -50,12 +51,14 @@ export default {
       ctx.lineTo(60, 90);
       ctx.closePath();
       ctx.fill();
+      // var canvas = document.getElementById("mycanvas");
+      window.treeimg = canvas.toDataURL("image/png");
     },
     //movetree(随着鼠标变化差值而变化)
     movetree: function(e) {
       e.preventDefault();
-      var start = new Date();
-      var start1 = start.toTimeString();
+      // var start = new Date();
+      // var start1 = start.toTimeString();
       // console.log(start);
       // console.log(start1);
       var [mousedisx, mousedisy] = [e.clientX, e.clientY];
@@ -84,11 +87,12 @@ export default {
       // var tree = document.getElementById("tree");
       // tree.style.opacity = "0.5";
       document.onmousemove = e => {
-        console.log("test");
+        // console.log("test");
         var sub1 = e.clientX - mousedisx;
         var sub2 = e.clientY - mousedisy;
         let xx = this.treeleft + sub1;
         let yy = this.treetop + sub2;
+        // console.log(xx +" "+ yy)
         moveEle.style.left = xx + "px";
         moveEle.style.top = yy + "px";
       };
@@ -99,8 +103,8 @@ export default {
         document.onmouseup = null;
         // this.treeleft = parseInt(tree.style.left);
         // this.treetop = parseInt(tree.style.top);
-        var stop = new Date();
-        console.log(stop.toTimeString());
+        // var stop = new Date();
+        // console.log(stop.toTimeString());
       };
     },
     //drawphone
@@ -141,6 +145,8 @@ export default {
       ctx.arc(50, 172.5, 5, 0, Math.PI * 2);
       ctx.closePath();
       ctx.fill();
+
+      window.phoneimg = canvas.toDataURL("image/png");
     },
     //movephone(计算出鼠标与图片相对位置,之后获取鼠标位置后减去相对位置就是图片的位置)
     movephone: function(e) {
@@ -149,17 +155,37 @@ export default {
       var phone = document.getElementById("phone");
       var disx = e.clientX - phone.offsetLeft;
       var disy = e.clientY - phone.offsetTop;
-      phone.style.opacity = "0.5";
+
+      let varr = this.phonevalue;
+      if(varr >= 0){
+        const newEle = document.createElement("div");
+        newEle.id = "addphone" + varr;
+        newEle.style.width = "100%";
+        const curSectionEle = document.getElementById("addeverything");
+        curSectionEle.appendChild(newEle);
+
+        const newEleson = document.createElement("div");
+        newEleson.id = "addSon";
+        const sectionEle = document.getElementById("addphone" +varr);
+        sectionEle.appendChild(newEleson);
+
+        new newphone().$mount("#addSon");
+        this.phonevalue +=1;
+        var moveEle = document.getElementById("addphone" + varr).childNodes[0];
+        moveEle.style.opacity = "0.5";
+      }
+
+      // phone.style.opacity = "0.5";
       //   console.log(disx + "+" + disy);
       document.onmousemove = e => {
         // 根据鼠标实时位置减去相对位置就是现在图片该在的位置
         var left = e.clientX - disx;
         var top = e.clientY - disy;
-        phone.style.left = left + "px";
-        phone.style.top = top + "px";
+        moveEle.style.left = left + "px";
+        moveEle.style.top = top + "px";
       };
       document.onmouseup = () => {
-        phone.style.opacity = "1";
+        moveEle.style.opacity = "1";
         document.onmousedown = null;
         document.onmousemove = null;
         document.onmouseup = null;
@@ -253,7 +279,8 @@ export default {
     },
     //清空全部
     clearall:function(){
-
+      new blank().$mount("#addeverything");
+      this.treevalue = 0;
     },
   },
   mounted() {
@@ -262,10 +289,13 @@ export default {
     this.drawtaiji();
   }
 };
+//Newtree
 var newtree = Vue.extend({
-  template:'<canvas id="addtree" width="100" height="150" v-on:mousedown="movetree"></canvas>',
+  // template:'<canvas id="addtree" class="addTree" width="100" height="150" v-on:mousedown="movetree"></canvas>',
+  template:'<img :src="src" class="addTree"></img>',
   data(){
     return{
+      src:window.treeimg,
     };
   },
   methods:{
@@ -299,7 +329,70 @@ var newtree = Vue.extend({
     },
   },
   mounted(){
-    this.draw();
+    // this.draw();
+  }
+});
+//Newphone
+var newphone = Vue.extend({
+  // template:'<canvas id="addphone" class="addPhone" width="100" height="180" v-on:mousedown="movephone"></canvas>',
+  template:'<img :src ="phonesrc" class="addPhone"></img>',
+  data(){
+    return{
+      phonesrc:window.phoneimg,
+    };
+  },
+  methods:{
+    movephone:function(){
+      alert('newphone');
+    },
+    drawphone:function(){
+      var canvas = document.getElementById("addphone");
+      if (!canvas.getContext) return;
+      var ctx = canvas.getContext("2d");
+      //整机背景颜色灰色
+      ctx.fillStyle = "gray";
+      ctx.beginPath();
+      ctx.moveTo(10, 0);
+      ctx.lineTo(90, 0);
+      ctx.arcTo(100, 0, 100, 10, 10);
+      ctx.lineTo(100, 170);
+      ctx.arcTo(100, 180, 90, 180, 10);
+      ctx.lineTo(10, 180);
+      ctx.arcTo(0, 180, 0, 170, 10);
+      ctx.lineTo(0, 10);
+      ctx.arcTo(0, 0, 10, 0, 10);
+      ctx.closePath();
+      ctx.fill();
+      //屏幕
+      ctx.fillStyle = "white";
+      ctx.beginPath();
+      ctx.moveTo(5, 15);
+      ctx.lineTo(95, 15);
+      ctx.lineTo(95, 165);
+      ctx.lineTo(5, 165);
+      ctx.closePath();
+      ctx.fill();
+      //听筒
+      ctx.beginPath();
+      ctx.arc(50, 8, 2, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.fill();
+      //home键
+      ctx.beginPath();
+      ctx.arc(50, 172.5, 5, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.fill();
+    }, 
+  },
+  mounted(){
+    // this.drawphone();
+  }
+});
+//clear
+var blank = Vue.extend({
+  template:'<div id="addeverything"></div>',
+  data(){
+    return {};
   }
 });
 </script>
@@ -311,35 +404,48 @@ var newtree = Vue.extend({
   top: 200px;
   opacity: 1;
   cursor: pointer;
+  width: 10%;
 }
 #phone {
   position: absolute;
-  left: 500px;
-  top: 500px;
+  left: 311px;
+  top: 502px;
   opacity: 1;
   cursor: pointer;
 }
 #taiji {
   position: absolute;
-  left: 500px;
-  top: 200px;
+  left: 100px;
+  top: 533px;
   opacity: 1;
   cursor: pointer;
 }
-#addeverything{
+#addborder{
   position: absolute;
   width: 60%;
   height: 80%;
-  top: 2%;
-  left: 35%;
   border: 1px solid gray;
-
+  left: 35%;
+  top: 2%;
 }
 #clearbt{
   position: absolute;
   font-size: 25px;
   left: 35%;
   top: 83%;
+}
+.addTree {
+  width: 10%;
+  position: absolute;
+  cursor: pointer;
+  opacity: 1;
+}
+.addPhone{
+  position: absolute;
+  left: 311px;
+  top: 502px;
+  opacity: 1;
+  cursor: pointer;
 }
 </style>
 

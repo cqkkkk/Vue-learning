@@ -4,12 +4,14 @@
         <canvas id="phone" width="100" height="180" v-on:mousedown="movephone"></canvas>
         <canvas id="taiji" width="100" height="100" v-on:mousedown="movetaiji"></canvas>
 
-        <div id="addtree"><div id="mountedtree"></div></div>
+        <div id="addeverything"></div>
+        <input type="button" value="一键清空" id="clearbt" v-on:click="clearall">
     </div>
     
 </template>
 
 <script>
+import Vue from "vue/dist/vue.js";
 export default {
   name: "dragmove",
   components: {},
@@ -18,7 +20,8 @@ export default {
       treeleft: 200,
       treetop: 200,
       taijileft: 500,
-      taijitop: 200
+      taijitop: 200,
+      treevalue:0,
     };
   },
   methods: {
@@ -53,27 +56,49 @@ export default {
       e.preventDefault();
       var start = new Date();
       var start1 = start.toTimeString();
-      console.log(start);
-      console.log(start1);
+      // console.log(start);
+      // console.log(start1);
       var [mousedisx, mousedisy] = [e.clientX, e.clientY];
-      var tree = document.getElementById("tree");
-      tree.style.opacity = "0.5";
+
+      let varr = this.treevalue;
+      if(varr >= 0){
+        // 移动时创建新的tree，并且让新建的tree随着鼠标移动
+        const newEle = document.createElement("div");
+        newEle.id = "add" + varr;
+        newEle.style.width = "100%";
+        newEle.style.position = "absolute";
+        const curSectionEle = document.getElementById("addeverything");
+        curSectionEle.appendChild(newEle);
+
+        const newEleson = document.createElement("div");
+        newEleson.id = "addSon";
+        const sectionEle = document.getElementById("add" + varr);
+        sectionEle.appendChild(newEleson);
+
+        new newtree().$mount("#addSon");
+        this.treevalue = this.treevalue + 1;
+        var moveEle = document.getElementById("add" + varr).childNodes[0];
+        moveEle.style.opacity = "0.5";
+      }
+
+      // var tree = document.getElementById("tree");
+      // tree.style.opacity = "0.5";
       document.onmousemove = e => {
         console.log("test");
         var sub1 = e.clientX - mousedisx;
         var sub2 = e.clientY - mousedisy;
         let xx = this.treeleft + sub1;
         let yy = this.treetop + sub2;
-        tree.style.left = xx + "px";
-        tree.style.top = yy + "px";
+        moveEle.style.left = xx + "px";
+        moveEle.style.top = yy + "px";
       };
       document.onmouseup = () => {
-        tree.style.opacity = "1";
+        moveEle.style.opacity = "1";
         document.onmousedown = null;
         document.onmousemove = null;
         document.onmouseup = null;
-        this.treeleft = parseInt(tree.style.left);
-        this.treetop = parseInt(tree.style.top);
+        // this.treeleft = parseInt(tree.style.left);
+        // this.treetop = parseInt(tree.style.top);
         var stop = new Date();
         console.log(stop.toTimeString());
       };
@@ -225,7 +250,11 @@ export default {
         [x, y] = [e.clientX, e.clientY];
         [xx, yy] = [addx, addy];
       };
-    }
+    },
+    //清空全部
+    clearall:function(){
+
+    },
   },
   mounted() {
     this.draw();
@@ -233,6 +262,46 @@ export default {
     this.drawtaiji();
   }
 };
+var newtree = Vue.extend({
+  template:'<canvas id="addtree" width="100" height="150" v-on:mousedown="movetree"></canvas>',
+  data(){
+    return{
+    };
+  },
+  methods:{
+    draw: function() {
+      var canvas = document.getElementById("addtree");
+      if (!canvas.getContext) return;
+      var ctx = canvas.getContext("2d");
+      ctx.fillStyle = "green";
+      ctx.beginPath();
+      ctx.moveTo(50, 0);
+      ctx.lineTo(70, 30);
+      ctx.lineTo(55, 30);
+      ctx.lineTo(100, 90);
+      ctx.lineTo(0, 90);
+      ctx.lineTo(45, 30);
+      ctx.lineTo(30, 30);
+      ctx.closePath();
+      ctx.fill();
+      //躯干
+      ctx.fillStyle = "brown";
+      ctx.beginPath();
+      ctx.moveTo(40, 90);
+      ctx.lineTo(40, 140);
+      ctx.lineTo(60, 140);
+      ctx.lineTo(60, 90);
+      ctx.closePath();
+      ctx.fill();
+    },
+    movetree:function(){ 
+      alert('newtree');
+    },
+  },
+  mounted(){
+    this.draw();
+  }
+});
 </script>
 
 <style>
@@ -256,6 +325,21 @@ export default {
   top: 200px;
   opacity: 1;
   cursor: pointer;
+}
+#addeverything{
+  position: absolute;
+  width: 60%;
+  height: 80%;
+  top: 2%;
+  left: 35%;
+  border: 1px solid gray;
+
+}
+#clearbt{
+  position: absolute;
+  font-size: 25px;
+  left: 35%;
+  top: 83%;
 }
 </style>
 

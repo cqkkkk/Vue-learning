@@ -7,7 +7,6 @@
         <div id="addeverything"></div>   
         <input type="button" value="一键清空" id="clearbt" v-on:click="clearall">
     </div>
-    
 </template>
 
 <script>
@@ -21,8 +20,8 @@ export default {
       treetop: 200,
       taijileft: 100,
       taijitop: 533,
-      treevalue:0,
-      phonevalue:0,
+      treevalue:0,//当前tree复制次数
+      phonevalue:0,//当前phone复制次数
     };
   },
   methods: {
@@ -66,6 +65,12 @@ export default {
       let varr = this.treevalue;
       if(varr >= 0){
         // 移动时创建新的tree，并且让新建的tree随着鼠标移动
+        /*  <div id="addeverything">
+        *        <div id="add0">
+        *            <div id="addSon"></div>因为实例挂载会代替整个dom元素，所以这里要创建双层div
+        *        </div>
+        *    </div>
+        */
         const newEle = document.createElement("div");
         newEle.id = "add" + varr;
         newEle.style.width = "100%";
@@ -77,7 +82,7 @@ export default {
         newEleson.id = "addSon";
         const sectionEle = document.getElementById("add" + varr);
         sectionEle.appendChild(newEleson);
-
+        // 挂载
         new newtree().$mount("#addSon");
         this.treevalue = this.treevalue + 1;
         var moveEle = document.getElementById("add" + varr).childNodes[0];
@@ -185,12 +190,18 @@ export default {
         moveEle.style.top = top + "px";
       };
       document.onmouseup = () => {
+        
         moveEle.style.opacity = "1";
         document.onmousedown = null;
         document.onmousemove = null;
         document.onmouseup = null;
       };
     },
+    //判断函数，判断移动的目标是否在指定的区域内
+    // judge:function(){
+    //   var addborder = document.getElementById('addborder');
+    //     let aaa = addborder.getBoundingClientRect().left;
+    // },
     //drawtaiji
     drawtaiji: function() {
       var canvas = document.getElementById("taiji");
@@ -291,7 +302,6 @@ export default {
 };
 //Newtree
 var newtree = Vue.extend({
-  // template:'<canvas id="addtree" class="addTree" width="100" height="150" v-on:mousedown="movetree"></canvas>',
   template:'<img :src="src" class="addTree"></img>',
   data(){
     return{
@@ -299,31 +309,6 @@ var newtree = Vue.extend({
     };
   },
   methods:{
-    draw: function() {
-      var canvas = document.getElementById("addtree");
-      if (!canvas.getContext) return;
-      var ctx = canvas.getContext("2d");
-      ctx.fillStyle = "green";
-      ctx.beginPath();
-      ctx.moveTo(50, 0);
-      ctx.lineTo(70, 30);
-      ctx.lineTo(55, 30);
-      ctx.lineTo(100, 90);
-      ctx.lineTo(0, 90);
-      ctx.lineTo(45, 30);
-      ctx.lineTo(30, 30);
-      ctx.closePath();
-      ctx.fill();
-      //躯干
-      ctx.fillStyle = "brown";
-      ctx.beginPath();
-      ctx.moveTo(40, 90);
-      ctx.lineTo(40, 140);
-      ctx.lineTo(60, 140);
-      ctx.lineTo(60, 90);
-      ctx.closePath();
-      ctx.fill();
-    },
     movetree:function(){ 
       alert('newtree');
     },
@@ -334,7 +319,6 @@ var newtree = Vue.extend({
 });
 //Newphone
 var newphone = Vue.extend({
-  // template:'<canvas id="addphone" class="addPhone" width="100" height="180" v-on:mousedown="movephone"></canvas>',
   template:'<img :src ="phonesrc" class="addPhone"></img>',
   data(){
     return{
@@ -345,44 +329,6 @@ var newphone = Vue.extend({
     movephone:function(){
       alert('newphone');
     },
-    drawphone:function(){
-      var canvas = document.getElementById("addphone");
-      if (!canvas.getContext) return;
-      var ctx = canvas.getContext("2d");
-      //整机背景颜色灰色
-      ctx.fillStyle = "gray";
-      ctx.beginPath();
-      ctx.moveTo(10, 0);
-      ctx.lineTo(90, 0);
-      ctx.arcTo(100, 0, 100, 10, 10);
-      ctx.lineTo(100, 170);
-      ctx.arcTo(100, 180, 90, 180, 10);
-      ctx.lineTo(10, 180);
-      ctx.arcTo(0, 180, 0, 170, 10);
-      ctx.lineTo(0, 10);
-      ctx.arcTo(0, 0, 10, 0, 10);
-      ctx.closePath();
-      ctx.fill();
-      //屏幕
-      ctx.fillStyle = "white";
-      ctx.beginPath();
-      ctx.moveTo(5, 15);
-      ctx.lineTo(95, 15);
-      ctx.lineTo(95, 165);
-      ctx.lineTo(5, 165);
-      ctx.closePath();
-      ctx.fill();
-      //听筒
-      ctx.beginPath();
-      ctx.arc(50, 8, 2, 0, Math.PI * 2);
-      ctx.closePath();
-      ctx.fill();
-      //home键
-      ctx.beginPath();
-      ctx.arc(50, 172.5, 5, 0, Math.PI * 2);
-      ctx.closePath();
-      ctx.fill();
-    }, 
   },
   mounted(){
     // this.drawphone();
@@ -395,6 +341,13 @@ var blank = Vue.extend({
     return {};
   }
 });
+// 删除实例
+var deleteEle = Vue.extend({
+  template: "<a></a>",
+  data() {
+    return {};
+  }
+});
 </script>
 
 <style>
@@ -404,7 +357,6 @@ var blank = Vue.extend({
   top: 200px;
   opacity: 1;
   cursor: pointer;
-  width: 10%;
 }
 #phone {
   position: absolute;
@@ -435,7 +387,6 @@ var blank = Vue.extend({
   top: 83%;
 }
 .addTree {
-  width: 10%;
   position: absolute;
   cursor: pointer;
   opacity: 1;

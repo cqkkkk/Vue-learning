@@ -197,12 +197,11 @@ export default {
         document.onmouseup = null;
       };
     },
-    //判断函数，判断移动的目标是否在指定的区域内
+    // 判断函数，判断移动的目标是否在指定的区域内
     // judge:function(){
     //   var addborder = document.getElementById('addborder');
     //     let aaa = addborder.getBoundingClientRect().left;
     // },
-    //drawtaiji
     drawtaiji: function() {
       var canvas = document.getElementById("taiji");
       if (!canvas.getContext) return;
@@ -302,15 +301,32 @@ export default {
 };
 //Newtree
 var newtree = Vue.extend({
-  template:'<img :src="src" class="addTree"></img>',
+  template:'<img :src="src" class="addTree" v-on:mousedown="movetree"></img>',
   data(){
     return{
       src:window.treeimg,
     };
   },
   methods:{
-    movetree:function(){ 
-      alert('newtree');
+    movetree:function(e){ 
+      e.preventDefault();
+      let odiv = e.target;
+      var disx = e.clientX - odiv.offsetLeft;
+      var disy = e.clientY - odiv.offsetTop;
+      odiv.style.opacity = "0.5"
+
+      document.onmousemove = e =>{
+        var left = e.clientX - disx;
+        var top = e.clientY -disy;
+        odiv.style.left = left + "px";
+        odiv.style.top = top + "px";
+      };
+      document.onmouseup = () =>{
+        odiv.style.opacity = "1";
+        document.onmousedown = null;
+        document.onmousemove = null;
+        document.onmouseup = null;
+      }
     },
   },
   mounted(){
@@ -319,15 +335,32 @@ var newtree = Vue.extend({
 });
 //Newphone
 var newphone = Vue.extend({
-  template:'<img :src ="phonesrc" class="addPhone"></img>',
+  template:'<img :src ="phonesrc" class="addPhone" v-on:mousedown="movephone"></img>',
   data(){
     return{
       phonesrc:window.phoneimg,
     };
   },
   methods:{
-    movephone:function(){
-      alert('newphone');
+    movephone:function(e){
+      e.preventDefault();
+      let odiv = e.target;
+      var disx = e.clientX - odiv.offsetLeft;
+      var disy = e.clientY - odiv.offsetTop;
+      odiv.style.opacity = "0.5";
+
+      document.onmousemove = e =>{
+        var left = e.clientX - disx;
+        var top = e.clientY - disy;
+        odiv.style.left = left + "px";
+        odiv.style.top = top + "px";
+      };
+      document.onmouseup = () =>{
+        odiv.style.opacity = "1";
+        document.onmousedown = null;
+        document.onmousemove = null;
+        document.onmouseup = null;
+      }
     },
   },
   mounted(){

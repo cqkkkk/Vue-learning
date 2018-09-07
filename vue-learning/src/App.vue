@@ -7,13 +7,15 @@
       <input type="button" value="getnowtime" v-on:click="seegetnowtime">
       <input type="button" value="clock" v-on:click="seeclock">
       <input type="button" value="dragdrop" v-on:click="seedragdrop">
-      <input type="button" value="translate" v-on:click = "seetranslate">
+      <input type="button" value="translate" v-on:click ="seetranslate">
+      <input type="button" value="crossroad" v-on:click ="seecrossroad">
     </div>
     <dragmove v-show="seendragmove"></dragmove>
     <getnowtime v-show= "seengetnowtime"></getnowtime>
     <clock v-show="seenclock"></clock>
     <draganddrop v-show="seendragdrop"></draganddrop>
     <translate v-show="seentranslate"></translate>
+    <crossroad v-show="seencrossroad"></crossroad>
   </div>
 </template>
 
@@ -24,6 +26,7 @@ import getnowtime from "./components/GetNowTime.vue";
 import clock from "./components/Clock.vue";
 import draganddrop from "./components/DragAndDrop.vue";
 import translate from "./components/Translate.vue";
+import crossroad from "./components/CrossRoad.vue";
 
 export default {
   name: "app",
@@ -33,7 +36,8 @@ export default {
     getnowtime,
     clock,
     draganddrop,
-    translate
+    translate,
+    crossroad
   },
   data() {
     return {
@@ -41,7 +45,8 @@ export default {
       seengetnowtime: false,
       seenclock:false,
       seendragdrop:false,
-      seentranslate:false
+      seentranslate:false,
+      seencrossroad:false
     };
   },
   methods:{
@@ -51,6 +56,7 @@ export default {
       this.seenclock = false;
       this.seendragdrop = false;
       this.seentranslate = false;
+      this.seencrossroad = false;
     },
     seedragmove:function(){
       this.empty();
@@ -71,6 +77,10 @@ export default {
     seetranslate:function(){
       this.empty();
       this.seentranslate = true;
+    },
+    seecrossroad:function(){
+      this.empty();
+      this.seencrossroad = true;
     }
   }
 };

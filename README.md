@@ -13,3 +13,6 @@
 
 ### GetNowTime.vue ✔
 * 获取当前时间，并将其格式化。使用setTimeOut实时显示当前的时间。
+
+### translate.vue ✔
+* 使用requestAnimationFrame实现简单2D平移动画。

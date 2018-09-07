@@ -7,11 +7,13 @@
       <input type="button" value="getnowtime" v-on:click="seegetnowtime">
       <input type="button" value="clock" v-on:click="seeclock">
       <input type="button" value="dragdrop" v-on:click="seedragdrop">
+      <input type="button" value="translate" v-on:click = "seetranslate">
     </div>
     <dragmove v-show="seendragmove"></dragmove>
     <getnowtime v-show= "seengetnowtime"></getnowtime>
     <clock v-show="seenclock"></clock>
     <draganddrop v-show="seendragdrop"></draganddrop>
+    <translate v-show="seentranslate"></translate>
   </div>
 </template>
 
@@ -21,6 +23,7 @@ import dragmove from "./components/DragMove.vue";
 import getnowtime from "./components/GetNowTime.vue";
 import clock from "./components/Clock.vue";
 import draganddrop from "./components/DragAndDrop.vue";
+import translate from "./components/Translate.vue";
 
 export default {
   name: "app",
@@ -29,14 +32,16 @@ export default {
     dragmove,
     getnowtime,
     clock,
-    draganddrop
+    draganddrop,
+    translate
   },
   data() {
     return {
       seendragmove: true,
       seengetnowtime: false,
       seenclock:false,
-      seendragdrop:false
+      seendragdrop:false,
+      seentranslate:false
     };
   },
   methods:{
@@ -45,6 +50,7 @@ export default {
       this.seengetnowtime = false;
       this.seenclock = false;
       this.seendragdrop = false;
+      this.seentranslate = false;
     },
     seedragmove:function(){
       this.empty();
@@ -61,6 +67,10 @@ export default {
     seedragdrop:function(){
       this.empty();
       this.seendragdrop = true;
+    },
+    seetranslate:function(){
+      this.empty();
+      this.seentranslate = true;
     }
   }
 };

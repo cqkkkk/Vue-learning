@@ -16,3 +16,6 @@
 
 ### translate.vue ✔
 * 使用requestAnimationFrame实现简单2D平移动画。
+
+### crossroad.vue ✔
+* 十字路口动画demo，核心即translate组件中的内容。

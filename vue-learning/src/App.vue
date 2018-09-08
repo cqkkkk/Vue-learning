@@ -10,12 +10,13 @@
       <input type="button" value="translate" v-on:click ="seetranslate">
       <input type="button" value="crossroad" v-on:click ="seecrossroad">
     </div>
-    <dragmove v-show="seendragmove"></dragmove>
+    <!-- <dragmove v-show="seendragmove"></dragmove>
     <getnowtime v-show= "seengetnowtime"></getnowtime>
     <clock v-show="seenclock"></clock>
     <draganddrop v-show="seendragdrop"></draganddrop>
     <translate v-show="seentranslate"></translate>
-    <crossroad v-show="seencrossroad"></crossroad>
+    <crossroad v-show="seencrossroad"></crossroad> -->
+    <svgtest></svgtest>
   </div>
 </template>
 
@@ -27,6 +28,7 @@ import clock from "./components/Clock.vue";
 import draganddrop from "./components/DragAndDrop.vue";
 import translate from "./components/Translate.vue";
 import crossroad from "./components/CrossRoad.vue";
+import svgtest from "./components/SvgTest.vue";
 
 export default {
   name: "app",
@@ -37,7 +39,8 @@ export default {
     clock,
     draganddrop,
     translate,
-    crossroad
+    crossroad,
+    svgtest
   },
   data() {
     return {

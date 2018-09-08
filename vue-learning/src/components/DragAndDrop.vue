@@ -31,13 +31,13 @@ export default {
         },
         drag: function(ev) {
             ev.dataTransfer.setData("img",ev.target.id);
-            console.log("drag");
+            // console.log("drag");
         },
         drop: function(ev) {
             ev.preventDefault();
             var data=ev.dataTransfer.getData("img");
             ev.target.appendChild(document.getElementById(data));
-            console.log("drop");
+            // console.log("drop");
         }
     },
     mounted(){

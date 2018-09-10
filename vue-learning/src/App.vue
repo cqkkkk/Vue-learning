@@ -16,7 +16,7 @@
     <draganddrop v-show="seendragdrop"></draganddrop>
     <translate v-show="seentranslate"></translate>
     <crossroad v-show="seencrossroad"></crossroad> -->
-    <svgtest></svgtest>
+    <svgtest :grade="3"></svgtest>
   </div>
 </template>
 

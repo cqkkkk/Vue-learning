@@ -19,3 +19,7 @@
 
 ### crossroad.vue ✔
 * 十字路口动画demo，核心即translate组件中的内容。
+
+### svgtest.vue ✔
+* 使用vue-awesome（一个用 Font Awesome icons 构建的 Vue.js 的 SVG 图标组件）构建的一个图标星星打分demo。
+* [参考网址](https://www.oschina.net/translate/build-your-first-vue-js-component?lang=chs&p=1)

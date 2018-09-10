@@ -30,3 +30,44 @@
 ### 2018.09.07
 #### 1.新增translate组件，能够实现简单2D的平移效果，并使用按钮可以控制start，stop，reset等功能。主要使用的是requestAnimationFrame这个动画请求来实现动画效果。
 #### 2.新增crossroad组件，主要做的是一个十字路口，其基础就是上面translate组件上面的平移动画，只是加上了一个背景，加上一些边缘的判断，也较简单。
+
+### 2018.09.10
+#### 1.新增svgtest组件，主要是学习使用svg图标，这里引进了一个库vue-awesome，引进库之后通过设置icon的name属性就可以显示相应的图标。
+#### 2.利用引进的库来创建一个简单的打分系统，可能之前的想法就是使用五个图标，然后在点击其中的图标之一的时候就切换这些图标的状态，但是这个参考网站上提供的想法是利用数据来控制图标，更改时也只需改变其中的数据即可。全部只需要一个<li>即可，使用vue的v-for来循环获得这些数据。在点击时就可以将相应的参数star直接传入到要执行的函数之中，更改data中的值来更新整一个打分图标的状态。
+```shell
+    <ul class="list">
+        <!-- 使用 Vue 的数据来设置组件状态 -->
+        <li v-for="star in maxStars" :class="{ 'active': star <= stars }" :key="star" class="star" @click="rate(star)">
+            <icon :name="star <= stars ? 'star' : 'star-of-life'"/>
+        </li>
+    </ul>
+```
+```shell
+    rate:function(star){
+        //原版（实际不能给出0评分）
+        // this.stars = star;
+        //改进版（重新点击同一颗 star，并切换至其当前状态，而不是保持 active 状态。）
+        this.stars = this.stars === star ? star - 1 : star
+    }
+```
+#### 3.之前，做的组件，它们的数据在数据属性中被硬编码。但是如果我们希望我们的组件实际上是可复用的，需要能够从其实例传递自定义数据。在vue.js中传递自定义数据可以通过props来做到。并且，我们还可以对要传递的props进行验证，可以做到：检查类型，要求定义一个 prop 属性，设置默认值，并执行自定义验证。
+```shell
+    props: {
+      grade: {
+        type: Number,
+        required: true
+      },
+      maxStars: {
+        type: Number,
+        default: 5
+      },
+      hasCounter: {
+        type: Boolean,
+        default: true
+      }
+    },
+    // props: ['grade', 'maxStars', 'hasCounter'],
+    
+    <svgtest :grade="3"></svgtest>
+```
+

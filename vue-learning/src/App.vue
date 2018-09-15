@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 import HelloWorld from "./components/HelloWorld.vue";
 import dragmove from "./components/DragMove.vue";
 import getnowtime from "./components/GetNowTime.vue";

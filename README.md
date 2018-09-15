@@ -24,4 +24,8 @@
 * 使用vue-awesome（一个用 Font Awesome icons 构建的 Vue.js 的 SVG 图标组件）构建的一个图标星星打分demo。
 * [参考网址](https://www.oschina.net/translate/build-your-first-vue-js-component?lang=chs&p=1)
 
+### install vue-router ✔
+* 尝试通过使用npm安装vue-router，但是老是提醒失败，不知道是因为node.js没有安装成功还是其他什么原因。
+* 直接在vue-learning的package.json文件中的dependencies加上vue-router，再在调试中yarn它会自动去下载安装，即可安装好vue-router。
+
 ## added by xin

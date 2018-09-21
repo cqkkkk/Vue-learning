@@ -66,8 +66,65 @@
         default: true
       }
     },
-    // props: ['grade', 'maxStars', 'hasCounter'],
-    
+    // props: ['grade', 'maxStars', 'hasCounter'],    
     <svgtest :grade="3"></svgtest>
 ```
+
+### 2018.09.21
+#### 1.添加router用于管理页面路由，
+```shell
+    //首先要将依赖import进来，还有一些你要放在相应路由地址下的组件也要import（此处省略）
+    import Vue from 'vue';
+    import Router from 'vue-router';
+    
+    Vue.use(Router);
+    
+    //此处举部分例子，这样就可以在/index路由地址下访问到app组件，在/demo/clock路由地址下访问到clock组件
+     export default new Router({
+         base: process.env.BASE_URL,
+         routes: [
+             {
+                 path: '/index',
+                 name:'home',
+                 component: app
+             },
+            {
+                path: '/demo/clock',
+                name: 'clock',
+                component : clock
+            },
+         ]
+     })   
+```
+#### 2.添加好了上面的router.js文件之后还需要做一点其他操作。
+```
+    //App.vue文件中模板中只需添加<router-view>
+    <template>
+        <router-view/>
+    </template>
+    
+    //main.js文件中要import vue-router，且new Vue中要加上router
+    import router from './router';
+    
+    new Vue({
+      router,
+      render: h => h(App)
+    }).$mount('#app')
+    
+```
+#### 3.整理项目的框架，尤其是在之前所有组件都是直接放在components文件夹中的根目录下，这样并不好。如何划分你的组件和目录是没有严格的限定的，你可以在一个组件目录下编写多个组件，但是绝对不可以将自己的组件直接暴露在 components 目录下面。所以最好在components文件夹下建子文件夹，将相应的vue组件放在子文件夹中。
+#### 4.之前是将所有组件都import到app组件中，然后在组件中设置v-if来显示或者隐藏相应的组件。现在这个主页面就完全不需要这样子做，没有必要再去将所有的子组件都import进来，而只需使用this.router.push就可以转换到想要访问的组件对应的路由。
+```shell
+    //举例
+    //html部分
+    <input type="button" value="dragmove" v-on:click="choosePage('dragmove')">
+    <input type="button" value="getnowtime" v-on:click="choosePage('getnowtime')">
+    <input type="button" value="clock" v-on:click="choosePage('clock')">
+    //js部分 转换路由函数
+    choosePage(src) {
+        console.log(src);
+		this.$router.push({ path: `/demo/${src}` });
+	}
+```
+
 

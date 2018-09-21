@@ -137,5 +137,7 @@
         };
     },
 ```
-
+#### 6.添加animation组件，能够使用css的animation操作多步动画。animation这个css3属性在[日志](https://github.com/cqkkkk/Daily-Record/blob/master/dailyrecord(2018.09).md#20180915%E5%B1%B1%E7%AB%B9%E5%8D%B3%E5%B0%86%E7%99%BB%E9%99%86%E5%B9%BF%E4%B8%9C)中有做过详细解释。
+#### 7.各个多步骤的动画之间采用的是setTimeout这个方法来将全部步骤串连在一起，但是这样做的话每当计算一个步骤的延时时，要将前面的全部步骤的时间加在一起，越到后面加这个时间就越麻烦。swnb写了一个linkTimeout的类可以将setTimeout连在一起，具体用法待进一步理解。（待更新）
+#### 8.SASS是一种CSS的开发工具，提供了许多便利的写法，大大节省了设计者的时间，使得CSS的开发，变得简单和可维护。[阮一峰的网络日志-SASS用法指南](http://www.ruanyifeng.com/blog/2012/06/sass.html)
 

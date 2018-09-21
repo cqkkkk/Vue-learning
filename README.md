@@ -35,4 +35,13 @@
 * /demo/dragmove 拖拉组件
 * 其他同理
 
+### install node-sass&sass-loader ✔
+* 安装同上，直接在package.json文件中去加入名字和版本号，再yarn编译一下就可以安装好
+* 具体用法待进一步学习（css工具）
+
+### add animation.vue ✔
+* 之前的动画步骤都是单一的步骤，比如从左往右，从上往下这样。
+* 当涉及到多步的步骤时，例如先上再左，再下再右这样就要用到css中的animation来进行操作
+* 该组件写了一个小demo使用animation展示多部动画效果
+
 ## added by xin

@@ -9,6 +9,7 @@ import translate from "./components/demo/Translate.vue";
 import crossroad from "./components/demo/CrossRoad.vue";
 import svgtest from "./components/demo/SvgTest.vue";
 import app from './components/home/test.vue';
+import animation from './components/demo/Animation.vue';
 
 
 Vue.use(Router);
@@ -64,6 +65,10 @@ Vue.use(Router);
         {
             path: '/demo/crossroad',
             component : crossroad
+        },
+        {
+            path: '/demo/animation',
+            component : animation
         }
      ]
  })

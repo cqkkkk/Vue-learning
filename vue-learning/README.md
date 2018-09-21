@@ -126,5 +126,16 @@
 		this.$router.push({ path: `/demo/${src}` });
 	}
 ```
+#### 5.修改test.vue组件，使用v-for，可以节省大部分的代码量
+```
+    //注意要加上最后面的key
+    <input type="button" v-for="(src,index) in srcList" :value='src' @click='choosePage(src)' :key="index">
+
+    data() {
+        return {
+            srcList:['clock','getnowtime','dragmove','draganddrop','translate','crossroad','svgtest']
+        };
+    },
+```
 
 

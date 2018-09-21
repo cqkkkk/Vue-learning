@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img src="../../public/images/draganddrop/shoes2.png" id="shoes" alt="shoes">
+        <img src="../../../public/images/draganddrop/shoes2.png" id="shoes" alt="shoes">
         <input type="button" value="start" v-on:click="start">
         <input type="button" value="stop" v-on:click="stop">
         <input type="button" value="reset" v-on:click="reset">

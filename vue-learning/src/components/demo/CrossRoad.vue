@@ -1,15 +1,15 @@
 <template>
     <div id="contentView">
         <canvas id="background" width="1280" height="800"></canvas>
-        <img src="../../public/images/cars/car1.jpg" id="car1" alt="car1">
-        <img src="../../public/images/cars/car2.jpg" id="car2" alt="car2">
-        <img src="../../public/images/cars/car4.jpg" id="car3" alt="car3">
-        <img src="../../public/images/cars/car3-1.jpg" id="car11" alt="car1-1">
-        <img src="../../public/images/cars/car4-1.jpg" id="car12" alt="car2-1">
-        <img src="../../public/images/cars/car2-1.jpg" id="car13" alt="car3-1">
-        <img src="../../public/images/cars/car3-2.jpg" id="car21" alt="car2-1">
-        <img src="../../public/images/cars/car4-2.jpg" id="car31" alt="car3-1">
-        <img src="../../public/images/cars/car1-2.jpg" id="car32" alt="car3-2">
+        <img src="../../../public/images/cars/car1.jpg" id="car1" alt="car1">
+        <img src="../../../public/images/cars/car2.jpg" id="car2" alt="car2">
+        <img src="../../../public/images/cars/car4.jpg" id="car3" alt="car3">
+        <img src="../../../public/images/cars/car3-1.jpg" id="car11" alt="car1-1">
+        <img src="../../../public/images/cars/car4-1.jpg" id="car12" alt="car2-1">
+        <img src="../../../public/images/cars/car2-1.jpg" id="car13" alt="car3-1">
+        <img src="../../../public/images/cars/car3-2.jpg" id="car21" alt="car2-1">
+        <img src="../../../public/images/cars/car4-2.jpg" id="car31" alt="car3-1">
+        <img src="../../../public/images/cars/car1-2.jpg" id="car32" alt="car3-2">
         <input type="button" value="东西方向通行" v-on:click="start1">
         <input type="button" value="南北方向通行" v-on:click="start2">
         <input type="button" value="stop" v-on:click ="stop">

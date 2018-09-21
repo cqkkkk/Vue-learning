@@ -1,9 +1,14 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import clock from './components/Clock.vue';
-import dragmove from './components/DragMove.vue';
-import app from './test.vue';
+import dragmove from "./components/demo/DragMove.vue";
+import getnowtime from "./components/demo/GetNowTime.vue";
+import clock from "./components/demo/Clock.vue";
+import draganddrop from "./components/demo/DragAndDrop.vue";
+import translate from "./components/demo/Translate.vue";
+import crossroad from "./components/demo/CrossRoad.vue";
+import svgtest from "./components/demo/SvgTest.vue";
+import app from './components/home/test.vue';
 
 
 Vue.use(Router);
@@ -31,21 +36,6 @@ Vue.use(Router);
              name:'home',
              component: app
          },
-        //  {
-        //      path: '/demo',
-        //      name:'demo',
-        //      component: app,
-        //      children: [
-        //          {
-        //              path: 'clock',
-        //              component: clock
-        //          },
-        //          {
-        //              path: 'dragmove',
-        //              component: dragmove
-        //          }
-        //      ]
-        //  }
         {
             path: '/demo/clock',
             name: 'clock',
@@ -54,6 +44,26 @@ Vue.use(Router);
         {
             path: '/demo/dragmove',
             component: dragmove
+        },
+        {
+            path: '/demo/getnowtime',
+            component : getnowtime
+        },
+        {
+            path: '/demo/draganddrop',
+            component : draganddrop
+        },
+        {
+            path: '/demo/translate',
+            component : translate
+        },
+        {
+            path: '/demo/svgtest',
+            component : svgtest
+        },
+        {
+            path: '/demo/crossroad',
+            component : crossroad
         }
      ]
  })

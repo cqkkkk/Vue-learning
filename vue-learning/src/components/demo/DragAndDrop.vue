@@ -2,7 +2,7 @@
     <div>
         <div id="box1" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
         <div id="box2" v-on:drop="drop($event)" v-on:dragover="allowDrop($event)"></div>
-        <img id="shoes1" src="../../public/images/draganddrop/shoes1.jpg" draggable="true" v-on:dragstart="drag($event)">
+        <img id="shoes1" src="../../../public/images/draganddrop/shoes1.jpg" draggable="true" v-on:dragstart="drag($event)">
     </div>
 </template>
 

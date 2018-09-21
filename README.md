@@ -28,4 +28,11 @@
 * 尝试通过使用npm安装vue-router，但是老是提醒失败，不知道是因为node.js没有安装成功还是其他什么原因。
 * 直接在vue-learning的package.json文件中的dependencies加上vue-router，再在调试中yarn它会自动去下载安装，即可安装好vue-router。
 
+### add router.js ✔
+* 使用vue-router来对页面进行路由管理
+* /index 暂时的主页面，可以选择demo中的各个component
+* /demo/clock 时钟组件
+* /demo/dragmove 拖拉组件
+* 其他同理
+
 ## added by xin

@@ -55,6 +55,7 @@ export default {
     data(){
         return{
           stars: this.grade,
+          seencounter :true
         };
     },
     methods:{

@@ -44,4 +44,8 @@
 * 当涉及到多步的步骤时，例如先上再左，再下再右这样就要用到css中的animation来进行操作
 * 该组件写了一个小demo使用animation展示多部动画效果
 
+### add linkTimeout.js ✔
+* 使用linkTimeout将一系列前后操作的步骤串联起来，逻辑更加清晰
+* 具体用法见[内部readme文件](https://github.com/cqkkkk/Vue-learning/tree/master/vue-learning)
+
 ## added by xin

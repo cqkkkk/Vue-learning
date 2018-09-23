@@ -48,4 +48,8 @@
 * 使用linkTimeout将一系列前后操作的步骤串联起来，逻辑更加清晰
 * 具体用法见[内部readme文件](https://github.com/cqkkkk/Vue-learning/tree/master/vue-learning)
 
+### add LinkAnimation.vue ✔
+* 添加linkTimeout.js 中导出的方法的使用例子，动画效果同animation.vue
+* 使用起来虽然步骤相差不大没有减少，但是在时间延时计算方面更加直接，更加方便，且逻辑更加清晰。
+
 ## added by xin

@@ -10,6 +10,7 @@ import crossroad from "./components/demo/CrossRoad.vue";
 import svgtest from "./components/demo/SvgTest.vue";
 import app from './components/home/test.vue';
 import animation from './components/demo/Animation.vue';
+import linkanimation from './components/demo/LinkAnimation.vue';
 
 
 Vue.use(Router);
@@ -69,6 +70,10 @@ Vue.use(Router);
         {
             path: '/demo/animation',
             component : animation
+        },
+        {
+            path: '/demo/linkanimation',
+            component : linkanimation
         }
      ]
  })
